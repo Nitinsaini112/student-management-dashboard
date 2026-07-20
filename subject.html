@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Subjects - Student Management System</title>
+    <!-- Google Fonts & Boxicons for Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="index.css">
+
+    <style>
+        .form-inline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-inline button {
+            margin-top: 0;
+            padding: 12px;
+            cursor: pointer;
+        }
+
+        .btn-delete {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+
+        .btn-delete:hover {
+            background: #cc0000;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- ==========================================
+             1. SIDEBAR COMPONENT
+             ========================================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <i class="bx bxs-graduation brand-icon"></i>
+                <h2>EduManage</h2>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <i class="bx bxs-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="student.html" class="menu-item">
+                    <i class="bx bxs-user-badge"></i>
+                    <span>Students</span>
+                </a>
+                <a href="teacher.html" class="menu-item">
+                    <i class="bx bxs-user-voice"></i>
+                    <span>Teachers</span>
+                </a>
+                <a href="class.html" class="menu-item">
+                    <i class="bx bxs-door-open"></i>
+                    <span>Classes</span>
+                </a>
+                <a href="subject.html" class="menu-item active">
+                    <i class="bx bxs-book-bookmark"></i>
+                    <span>Subjects</span>
+                </a>
+                <a href="attendance.html" class="menu-item">
+                    <i class="bx bx-calendar-check"></i>
+                    <span>Attendance</span>
+                </a>
+                <a href="fee.html" class="menu-item">
+                    <i class="bx bxs-credit-card"></i>
+                    <span>Fees</span>
+                </a>
+                <a href="exam.html" class="menu-item">
+                    <i class="bx bxs-edit-alt"></i>
+                    <span>Exams</span>
+                </a>
+                <a href="report.html" class="menu-item">
+                    <i class="bx bxs-bar-chart-alt-2"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="role.html" class="menu-item">
+                    <i class="bx bxs-user-account"></i>
+                    <span>User Roles</span>
+                </a>
+                <a href="setting.html" class="menu-item">
+                    <i class="bx bxs-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="menu-item logout">
+                    <i class="bx bx-log-out"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ==========================================
+             2. MAIN WRAPPER (Topbar + Page Content)
+             ========================================== -->
+        <div class="main-wrapper">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar" id="toggleSidebar">
+                        <i class="bx bx-menu"></i>
+                    </button>
+                    <div class="search-wrapper">
+                        <i class="bx bx-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Search subjects...">
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="notification-icon">
+                        <i class="bx bx-bell"></i>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <span class="user-name">Admin User</span>
+                            <span class="user-role">Super Admin</span>
+                        </div>
+                        <div class="profile-avatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- PAGE CONTENT CONTAINER -->
+            <main class="main-content">
+                <div class="page-header">
+                    <h1>Subject Management</h1>
+                    <p>Add curriculum subjects, set subject codes, and assign teachers.</p>
+                </div>
+
+                <div class="content-body">
+
+                    <!-- ==========================================
+                         3. FORM TO ADD SUBJECT
+                         ========================================== -->
+                    <div class="data-card" style="margin-bottom: 25px;">
+                        <div class="card-header">
+                            <h2>Add New Subject</h2>
+                        </div>
+                        <form id="subjectForm" class="form-inline">
+                            <div class="form-group">
+                                <label for="subName">Subject Name</label>
+                                <input type="text" id="subName" placeholder="e.g. Mathematics" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subCode">Subject Code</label>
+                                <input type="text" id="subCode" placeholder="e.g. MATH101" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subTeacher">Assigned Teacher</label>
+                                <input type="text" id="subTeacher" placeholder="e.g. Dr. Rajesh Kumar" required>
+                            </div>
+
+                            <button type="submit" class="btn-login">Add Subject</button>
+                        </form>
+                    </div>
+
+                    <!-- ==========================================
+                         4. ALL SUBJECTS DATA TABLE 
+                         ========================================== -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h2>All Subjects List</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Subject Code</th>
+                                        <th>Subject Name</th>
+                                        <th>Assigned Teacher</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="allSubjectsTable">
+                                    <!-- Dynamic Rows Inject by script.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- Main dynamic binding script -->
+    <script src="script.js"></script>
+</body>
+
+</html>

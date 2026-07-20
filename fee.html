@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fee Management - Student Management System</title>
+    <!-- Google Fonts & Boxicons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="index.css">
+
+    <style>
+        /* ==========================================
+           FEES PAGE SPECIFIC STYLES
+           ========================================== */
+        .metric-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .metric-icon.collected { background: #d1fae5; color: #10b981; }
+        .metric-icon.pending { background: #fef3c7; color: #d97706; }
+        .metric-icon.overdue { background: #fee2e2; color: #ef4444; }
+
+        .fee-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        @media (max-width: 992px) {
+            .fee-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .form-group input, 
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .filter-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .badge-fee {
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-block;
+        }
+
+        .badge-paid { background: #d1fae5; color: #065f46; }
+        .badge-partial { background: #fef3c7; color: #92400e; }
+        .badge-unpaid { background: #fee2e2; color: #991b1b; }
+
+        .btn-action-sm {
+            border: none;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            transition: 0.2s;
+        }
+
+        .btn-print { background: #4f46e5; color: white; }
+        .btn-print:hover { background: #4338ca; }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- 1. SIDEBAR COMPONENT -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <i class="bx bxs-graduation brand-icon"></i>
+                <h2>EduManage</h2>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item"><i class="bx bxs-dashboard"></i><span>Dashboard</span></a>
+                <a href="student.html" class="menu-item"><i class="bx bxs-user-badge"></i><span>Students</span></a>
+                <a href="teacher.html" class="menu-item"><i class="bx bxs-user-voice"></i><span>Teachers</span></a>
+                <a href="class.html" class="menu-item"><i class="bx bxs-door-open"></i><span>Classes</span></a>
+                <a href="subject.html" class="menu-item"><i class="bx bxs-book-bookmark"></i><span>Subjects</span></a>
+                <a href="attendance.html" class="menu-item"><i class="bx bx-calendar-check"></i><span>Attendance</span></a>
+                <a href="fee.html" class="menu-item active"><i class="bx bxs-credit-card"></i><span>Fees</span></a>
+                <a href="exam.html" class="menu-item"><i class="bx bxs-edit-alt"></i><span>Exams</span></a>
+                <a href="report.html" class="menu-item"><i class="bx bxs-bar-chart-alt-2"></i><span>Reports</span></a>
+                <a href="role.html" class="menu-item"><i class="bx bxs-user-account"></i><span>User Roles</span></a>
+                <a href="setting.html" class="menu-item"><i class="bx bxs-cog"></i><span>Settings</span></a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="menu-item logout">
+                    <i class="bx bx-log-out"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- 2. MAIN WRAPPER -->
+        <div class="main-wrapper">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar" id="toggleSidebar">
+                        <i class="bx bx-menu"></i>
+                    </button>
+                    <div class="search-wrapper">
+                        <i class="bx bx-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Search fee records...">
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="notification-icon">
+                        <i class="bx bx-bell"></i>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <span class="user-name">Admin User</span>
+                            <span class="user-role">Super Admin</span>
+                        </div>
+                        <div class="profile-avatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <div class="page-header">
+                    <h1>Fee Management</h1>
+                    <p>Collect tuition fees, issue payment receipts, and monitor outstanding dues.</p>
+                </div>
+
+                <div class="content-body">
+
+                    <!-- METRICS GRID -->
+                    <div class="metric-cards-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon collected"><i class="bx bx-dollar-circle"></i></div>
+                            <div>
+                                <h3>$128,450</h3>
+                                <p style="color: #666; font-size: 13px;">Total Fees Collected</p>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon pending"><i class="bx bx-time-five"></i></div>
+                            <div>
+                                <h3>$14,200</h3>
+                                <p style="color: #666; font-size: 13px;">Pending Collections</p>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon overdue"><i class="bx bx-error-circle"></i></div>
+                            <div>
+                                <h3>$3,850</h3>
+                                <p style="color: #666; font-size: 13px;">Overdue Payments</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RECORD PAYMENT FORM & RECENT SUMMARY -->
+                    <div class="data-card" style="margin-bottom: 25px;">
+                        <div class="card-header">
+                            <h2>Collect / Record Fee Payment</h2>
+                        </div>
+                        <form id="feeForm">
+                            <div class="fee-grid">
+                                <div>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label for="studentName">Student Name</label>
+                                        <input type="text" id="studentName" placeholder="e.g., Jane Doe" required>
+                                    </div>
+                                    <div class="form-group" style="margin-bottom: 15px;">
+                                        <label for="studentClass">Class / Grade</label>
+                                        <select id="studentClass" required>
+                                            <option value="">Select Class</option>
+                                            <option value="Class 10-A">Class 10-A</option>
+                                            <option value="Class 10-B">Class 10-B</option>
+                                            <option value="Class 11-A">Class 11-A</option>
+                                            <option value="Class 12-A">Class 12-A</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <div class="fee-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 0;">
+                                        <div class="form-group" style="margin-bottom: 15px;">
+                                            <label for="amountPaid">Amount Paid ($)</label>
+                                            <input type="number" id="amountPaid" placeholder="e.g., 500" min="0" required>
+                                        </div>
+                                        <div class="form-group" style="margin-bottom: 15px;">
+                                            <label for="paymentType">Payment Type</label>
+                                            <select id="paymentType" required>
+                                                <option value="Tuition Fee">Tuition Fee</option>
+                                                <option value="Exam Fee">Exam Fee</option>
+                                                <option value="Transport Fee">Transport Fee</option>
+                                                <option value="Library Fee">Library Fee</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="fee-grid" style="grid-template-columns: 1fr 1fr; margin-bottom: 0;">
+                                        <div class="form-group">
+                                            <label for="paymentMethod">Payment Method</label>
+                                            <select id="paymentMethod" required>
+                                                <option value="Cash">Cash</option>
+                                                <option value="Card">Credit / Debit Card</option>
+                                                <option value="Bank Transfer">Bank Transfer</option>
+                                                <option value="Cheque">Cheque</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="feeStatus">Status</label>
+                                            <select id="feeStatus" required>
+                                                <option value="Paid">Fully Paid</option>
+                                                <option value="Partial">Partial</option>
+                                                <option value="Unpaid">Unpaid</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary-save" style="background: #4f46e5; color: #fff; border: none; padding: 10px 20px; border-radius: 6px; cursor: pointer;">
+                                <i class="bx bx-check-circle"></i> Save Transaction
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- FEES RECORDS TABLE -->
+                    <div class="data-card">
+                        <div class="filter-bar">
+                            <h2>Fee Records</h2>
+                            <div class="filter-controls">
+                                <select id="filterClass" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd;">
+                                    <option value="All">All Classes</option>
+                                    <option value="Class 10-A">Class 10-A</option>
+                                    <option value="Class 10-B">Class 10-B</option>
+                                    <option value="Class 11-A">Class 11-A</option>
+                                    <option value="Class 12-A">Class 12-A</option>
+                                </select>
+                                <select id="filterStatus" style="padding: 8px; border-radius: 6px; border: 1px solid #ddd;">
+                                    <option value="All">All Statuses</option>
+                                    <option value="Paid">Paid</option>
+                                    <option value="Partial">Partial</option>
+                                    <option value="Unpaid">Unpaid</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Receipt ID</th>
+                                        <th>Student Name</th>
+                                        <th>Class</th>
+                                        <th>Fee Type</th>
+                                        <th>Amount</th>
+                                        <th>Method</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="feesTableBody">
+                                    <tr>
+                                        <td>#REC-1001</td>
+                                        <td><strong>Alexander Wright</strong></td>
+                                        <td>Class 10-A</td>
+                                        <td>Tuition Fee</td>
+                                        <td>$1,200</td>
+                                        <td>Card</td>
+                                        <td><span class="badge-fee badge-paid">Paid</span></td>
+                                        <td>
+                                            <button class="btn-action-sm btn-print" onclick="printReceipt('REC-1001', 'Alexander Wright', '$1,200')">
+                                                <i class="bx bx-printer"></i> Receipt
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#REC-1002</td>
+                                        <td><strong>Sophia Martinez</strong></td>
+                                        <td>Class 10-B</td>
+                                        <td>Tuition Fee</td>
+                                        <td>$600</td>
+                                        <td>Cash</td>
+                                        <td><span class="badge-fee badge-partial">Partial</span></td>
+                                        <td>
+                                            <button class="btn-action-sm btn-print" onclick="printReceipt('REC-1002', 'Sophia Martinez', '$600')">
+                                                <i class="bx bx-printer"></i> Receipt
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#REC-1003</td>
+                                        <td><strong>Liam Johnson</strong></td>
+                                        <td>Class 12-A</td>
+                                        <td>Exam Fee</td>
+                                        <td>$150</td>
+                                        <td>Bank Transfer</td>
+                                        <td><span class="badge-fee badge-paid">Paid</span></td>
+                                        <td>
+                                            <button class="btn-action-sm btn-print" onclick="printReceipt('REC-1003', 'Liam Johnson', '$150')">
+                                                <i class="bx bx-printer"></i> Receipt
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>#REC-1004</td>
+                                        <td><strong>Emma Watson</strong></td>
+                                        <td>Class 11-A</td>
+                                        <td>Transport Fee</td>
+                                        <td>$300</td>
+                                        <td>-</td>
+                                        <td><span class="badge-fee badge-unpaid">Unpaid</span></td>
+                                        <td>
+                                            <button class="btn-action-sm btn-print" style="opacity: 0.5; cursor: not-allowed;" disabled>
+                                                <i class="bx bx-block"></i> Pending
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+
+        </div>
+    </div>
+    <script src="script.js"></script>
+
+</body>
+
+</html>

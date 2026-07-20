@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics - Student Management System</title>
+    <!-- Google Fonts & Boxicons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="index.css">
+
+    <style>
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .filter-grid select,
+        .filter-grid input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            font-size: 14px;
+        }
+
+        .btn-generate {
+            background: #4f46e5;
+            color: #fff;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-generate:hover {
+            background: #4338ca;
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-download {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            background: #059669;
+        }
+
+        .btn-print {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-print:hover {
+            background: #4b5563;
+        }
+
+        .metric-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .metric-icon.attendance { background: #e0e7ff; color: #4f46e5; }
+        .metric-icon.finance { background: #d1fae5; color: #10b981; }
+        .metric-icon.academic { background: #fef3c7; color: #d97706; }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- ==========================================
+             1. SIDEBAR COMPONENT
+             ========================================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <i class="bx bxs-graduation brand-icon"></i>
+                <h2>EduManage</h2>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <i class="bx bxs-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="student.html" class="menu-item">
+                    <i class="bx bxs-user-badge"></i>
+                    <span>Students</span>
+                </a>
+                <a href="teacher.html" class="menu-item">
+                    <i class="bx bxs-user-voice"></i>
+                    <span>Teachers</span>
+                </a>
+                <a href="class.html" class="menu-item">
+                    <i class="bx bxs-door-open"></i>
+                    <span>Classes</span>
+                </a>
+                <a href="subject.html" class="menu-item">
+                    <i class="bx bxs-book-bookmark"></i>
+                    <span>Subjects</span>
+                </a>
+                <a href="attendance.html" class="menu-item">
+                    <i class="bx bx-calendar-check"></i>
+                    <span>Attendance</span>
+                </a>
+                <a href="fee.html" class="menu-item">
+                    <i class="bx bxs-credit-card"></i>
+                    <span>Fees</span>
+                </a>
+                <a href="exam.html" class="menu-item">
+                    <i class="bx bxs-edit-alt"></i>
+                    <span>Exams</span>
+                </a>
+                <a href="report.html" class="menu-item active">
+                    <i class="bx bxs-bar-chart-alt-2"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="role.html"class="menu-item">
+                    <i class="bx bxs-user-account"></i>
+                    <span>User Roles</span>
+                </a>
+                <a href="setting.html" class="menu-item">
+                    <i class="bx bxs-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="menu-item logout">
+                    <i class="bx bx-log-out"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ==========================================
+             2. MAIN WRAPPER (Topbar + Content)
+             ========================================== -->
+        <div class="main-wrapper">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar" id="toggleSidebar">
+                        <i class="bx bx-menu"></i>
+                    </button>
+                    <div class="search-wrapper">
+                        <i class="bx bx-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Search reports...">
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="notification-icon">
+                        <i class="bx bx-bell"></i>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <span class="user-name">Admin User</span>
+                            <span class="user-role">Super Admin</span>
+                        </div>
+                        <div class="profile-avatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <div class="page-header">
+                    <h1>Reports & Analytics</h1>
+                    <p>Generate, export, and analyze system-wide performance and financial metrics.</p>
+                </div>
+
+                <div class="content-body">
+
+                    <!-- METRIC HIGHLIGHT CARDS -->
+                    <div class="metric-cards-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon attendance">
+                                <i class="bx bx-check-double"></i>
+                            </div>
+                            <div>
+                                <h3>94.2%</h3>
+                                <p style="color: #666; font-size: 13px;">Avg. Attendance Rate</p>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon finance">
+                                <i class="bx bx-dollar-circle"></i>
+                            </div>
+                            <div>
+                                <h3>₹3,42,000</h3>
+                                <p style="color: #666; font-size: 13px;">Total Revenue (YTD)</p>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon academic">
+                                <i class="bx bx-award"></i>
+                            </div>
+                            <div>
+                                <h3>88.5%</h3>
+                                <p style="color: #666; font-size: 13px;">Overall Pass Percentage</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REPORT GENERATOR FORM -->
+                    <div class="data-card" style="margin-bottom: 25px;">
+                        <div class="card-header">
+                            <h2>Generate Custom Report</h2>
+                        </div>
+                        <form id="reportForm" class="filter-grid">
+                            <div class="form-group">
+                                <label for="reportType">Report Type</label>
+                                <select id="reportType" required>
+                                    <option value="Attendance Report">Attendance Summary</option>
+                                    <option value="Fee Collection Report">Fee Collection & Dues</option>
+                                    <option value="Academic Performance">Academic Exam Performance</option>
+                                    <option value="Teacher Workload">Teacher Workload Report</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="classFilter">Class / Grade</label>
+                                <select id="classFilter">
+                                    <option value="All Classes">All Classes</option>
+                                    <option value="Class 9-A">Class 9-A</option>
+                                    <option value="Class 10-A">Class 10-A</option>
+                                    <option value="Class 11-Science">Class 11-Science</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="startDate">Start Date</label>
+                                <input type="date" id="startDate" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="endDate">End Date</label>
+                                <input type="date" id="endDate" required>
+                            </div>
+
+                            <button type="submit" class="btn-generate">
+                                <i class="bx bx-file-blank"></i> Generate
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- HISTORICAL GENERATED REPORTS TABLE -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h2>Available & Generated Reports</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Report Name</th>
+                                        <th>Category</th>
+                                        <th>Generated Date</th>
+                                        <th>Format</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportsTableBody">
+                                    <!-- Dynamic rows loaded via script.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- Script file -->
+    <script src="script.js"></script>
+</body>
+
+</html><!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports & Analytics - Student Management System</title>
+    <!-- Google Fonts & Boxicons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Global CSS -->
+    <link rel="stylesheet" href="index.css">
+
+    <style>
+        .filter-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            align-items: end;
+        }
+
+        .filter-grid select,
+        .filter-grid input {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            background: #fff;
+            font-size: 14px;
+        }
+
+        .btn-generate {
+            background: #4f46e5;
+            color: #fff;
+            border: none;
+            padding: 11px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .btn-generate:hover {
+            background: #4338ca;
+        }
+
+        .report-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-download {
+            background: #10b981;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-download:hover {
+            background: #059669;
+        }
+
+        .btn-print {
+            background: #6b7280;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: 0.3s;
+        }
+
+        .btn-print:hover {
+            background: #4b5563;
+        }
+
+        .metric-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 25px;
+        }
+
+        .metric-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .metric-icon.attendance { background: #e0e7ff; color: #4f46e5; }
+        .metric-icon.finance { background: #d1fae5; color: #10b981; }
+        .metric-icon.academic { background: #fef3c7; color: #d97706; }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-layout">
+
+        <!-- ==========================================
+             1. SIDEBAR COMPONENT
+             ========================================== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-brand">
+                <i class="bx bxs-graduation brand-icon"></i>
+                <h2>EduManage</h2>
+            </div>
+
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item">
+                    <i class="bx bxs-dashboard"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="student.html" class="menu-item">
+                    <i class="bx bxs-user-badge"></i>
+                    <span>Students</span>
+                </a>
+                <a href="teacher.html" class="menu-item">
+                    <i class="bx bxs-user-voice"></i>
+                    <span>Teachers</span>
+                </a>
+                <a href="class.html" class="menu-item">
+                    <i class="bx bxs-door-open"></i>
+                    <span>Classes</span>
+                </a>
+                <a href="subject.html" class="menu-item">
+                    <i class="bx bxs-book-bookmark"></i>
+                    <span>Subjects</span>
+                </a>
+                <a href="attendance.html" class="menu-item">
+                    <i class="bx bx-calendar-check"></i>
+                    <span>Attendance</span>
+                </a>
+                <a href="fee.html" class="menu-item">
+                    <i class="bx bxs-credit-card"></i>
+                    <span>Fees</span>
+                </a>
+                <a href="exam.html" class="menu-item">
+                    <i class="bx bxs-edit-alt"></i>
+                    <span>Exams</span>
+                </a>
+                <a href="report.html" class="menu-item active">
+                    <i class="bx bxs-bar-chart-alt-2"></i>
+                    <span>Reports</span>
+                </a>
+                <a href="role.html"class="menu-item">
+                    <i class="bx bxs-user-account"></i>
+                    <span>User Roles</span>
+                </a>
+                <a href="setting.html" class="menu-item">
+                    <i class="bx bxs-cog"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <a href="index.html" class="menu-item logout">
+                    <i class="bx bx-log-out"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- ==========================================
+             2. MAIN WRAPPER (Topbar + Content)
+             ========================================== -->
+        <div class="main-wrapper">
+
+            <!-- TOPBAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="toggle-sidebar" id="toggleSidebar">
+                        <i class="bx bx-menu"></i>
+                    </button>
+                    <div class="search-wrapper">
+                        <i class="bx bx-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Search reports...">
+                    </div>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="notification-icon">
+                        <i class="bx bx-bell"></i>
+                        <span class="badge"></span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="profile-info">
+                            <span class="user-name">Admin User</span>
+                            <span class="user-role">Super Admin</span>
+                        </div>
+                        <div class="profile-avatar">A</div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- MAIN CONTENT -->
+            <main class="main-content">
+                <div class="page-header">
+                    <h1>Reports & Analytics</h1>
+                    <p>Generate, export, and analyze system-wide performance and financial metrics.</p>
+                </div>
+
+                <div class="content-body">
+
+                    <!-- METRIC HIGHLIGHT CARDS -->
+                    <div class="metric-cards-grid">
+                        <div class="metric-card">
+                            <div class="metric-icon attendance">
+                                <i class="bx bx-check-double"></i>
+                            </div>
+                            <div>
+                                <h3>94.2%</h3>
+                                <p style="color: #666; font-size: 13px;">Avg. Attendance Rate</p>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon finance">
+                                <i class="bx bx-dollar-circle"></i>
+                            </div>
+                            <div>
+                                <h3>₹3,42,000</h3>
+                                <p style="color: #666; font-size: 13px;">Total Revenue (YTD)</p>
+                            </div>
+                        </div>
+
+                        <div class="metric-card">
+                            <div class="metric-icon academic">
+                                <i class="bx bx-award"></i>
+                            </div>
+                            <div>
+                                <h3>88.5%</h3>
+                                <p style="color: #666; font-size: 13px;">Overall Pass Percentage</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- REPORT GENERATOR FORM -->
+                    <div class="data-card" style="margin-bottom: 25px;">
+                        <div class="card-header">
+                            <h2>Generate Custom Report</h2>
+                        </div>
+                        <form id="reportForm" class="filter-grid">
+                            <div class="form-group">
+                                <label for="reportType">Report Type</label>
+                                <select id="reportType" required>
+                                    <option value="Attendance Report">Attendance Summary</option>
+                                    <option value="Fee Collection Report">Fee Collection & Dues</option>
+                                    <option value="Academic Performance">Academic Exam Performance</option>
+                                    <option value="Teacher Workload">Teacher Workload Report</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="classFilter">Class / Grade</label>
+                                <select id="classFilter">
+                                    <option value="All Classes">All Classes</option>
+                                    <option value="Class 9-A">Class 9-A</option>
+                                    <option value="Class 10-A">Class 10-A</option>
+                                    <option value="Class 11-Science">Class 11-Science</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="startDate">Start Date</label>
+                                <input type="date" id="startDate" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="endDate">End Date</label>
+                                <input type="date" id="endDate" required>
+                            </div>
+
+                            <button type="submit" class="btn-generate">
+                                <i class="bx bx-file-blank"></i> Generate
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- HISTORICAL GENERATED REPORTS TABLE -->
+                    <div class="data-card">
+                        <div class="card-header">
+                            <h2>Available & Generated Reports</h2>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Report Name</th>
+                                        <th>Category</th>
+                                        <th>Generated Date</th>
+                                        <th>Format</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="reportsTableBody">
+                                    <!-- Dynamic rows loaded via script.js -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+
+        </div>
+    </div>
+
+    <!-- Script file -->
+    <script src="script.js"></script>
+</body>
+
+</html>
